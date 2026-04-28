@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="theme-color" content="#0f0c07">
+<title>宥鈞，燃起來。</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700;900&family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+:root{
+  --ink:#0f0c07; --gold:#c8961e; --gold-l:#e8b84b; --gold-bg:#fef8ec;
+  --paper:#f5efe0; --white:#fdfaf3; --light:#e8e0ce; --gray:#6b6258;
+  --green:#255c35; --green-bg:#eef7f1; --blue:#173e78; --blue-bg:#eef2fb;
+  --red:#a62828; --red-bg:#fdf0f0; --purple:#5b1e6b;
+  --mon:#1e4d8c; --tue:#2e6b3e; --wed:#7c3a1e;
+  --thu:#5b1e6b; --fri:#1e5c5c; --sat:#8c1e1e; --sun:#4a4038;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;}
+body{font-family:'Noto Sans TC',sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;font-size:14px;line-height:1.65;}
+
+/* ── HERO ── */
+.hero{background:var(--ink);color:var(--paper);padding:44px 24px 36px;position:relative;overflow:hidden;}
+.hero::before{content:'鬥';font-family:'Noto Serif TC',serif;font-size:260px;font-weight:900;color:rgba(200,150,30,0.06);position:absolute;right:-20px;top:-50px;line-height:1;pointer-events:none;user-select:none;}
+.hero-eyebrow{display:flex;align-items:center;gap:8px;margin-bottom:18px;}
+.hero-tag{background:var(--gold);color:var(--ink);font-size:9px;font-weight:700;letter-spacing:3px;padding:4px 12px;}
+.hero-tag-sub{font-size:11px;color:rgba(245,239,227,0.35);letter-spacing:1px;}
+.hero h1{font-family:'Noto Serif TC',serif;font-size:clamp(28px,8vw,52px);font-weight:900;line-height:1.15;margin-bottom:8px;}
+.hero h1 .name{color:var(--gold-l);}
+.hero h1 .target{display:block;font-size:clamp(15px,4vw,24px);color:rgba(245,239,227,0.45);font-weight:400;margin-top:3px;letter-spacing:2px;}
+.hero-motto{margin-top:18px;font-size:14px;color:rgba(245,239,227,0.9);letter-spacing:1.5px;border-left:3px solid var(--gold);padding-left:14px;line-height:2;font-weight:500;}
+.hero-motto .sub{display:block;font-size:11px;color:rgba(245,239,227,0.4);font-weight:400;margin-top:2px;letter-spacing:1px;}
+.hero-stats{display:flex;gap:24px;margin-top:28px;flex-wrap:wrap;}
+.stat-num{font-family:'Noto Serif TC',serif;font-size:30px;font-weight:900;color:var(--gold-l);display:block;line-height:1;}
+.stat-lbl{font-size:9px;color:rgba(245,239,227,0.4);letter-spacing:1.5px;margin-top:2px;display:block;}
+
+/* ── NAV ── */
+.nav{background:var(--white);border-bottom:2px solid var(--light);overflow-x:auto;scrollbar-width:none;position:sticky;top:0;z-index:100;display:flex;}
+.nav::-webkit-scrollbar{display:none;}
+.nav button{flex:none;padding:14px 16px;font-size:12px;font-weight:600;color:var(--gray);border:none;background:none;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;font-family:'Noto Sans TC',sans-serif;letter-spacing:0.3px;transition:all .15s;}
+.nav button:hover{color:var(--ink);}
+.nav button.active{color:var(--ink);border-bottom-color:var(--gold);font-weight:700;}
+
+/* ── SECTIONS ── */
+.sec{display:none;padding:24px 20px 48px;max-width:720px;margin:0 auto;}
+.sec.active{display:block;}
+.sec-title{font-family:'Noto Serif TC',serif;font-size:21px;font-weight:900;margin-bottom:5px;}
+.sec-desc{color:var(--gray);font-size:13px;margin-bottom:24px;line-height:1.85;max-width:620px;}
+
+/* ── CARDS ── */
+.card{background:var(--white);border:1px solid var(--light);border-left:4px solid var(--gold);padding:20px 22px;margin-bottom:14px;}
+.card.blue{border-left-color:var(--blue);}
+.card.green{border-left-color:var(--green);}
+.card.red{border-left-color:var(--red);}
+.card.purple{border-left-color:var(--purple);}
+.card-title{font-family:'Noto Serif TC',serif;font-size:15px;font-weight:700;margin-bottom:9px;}
+.card p,.card li{font-size:13px;line-height:1.95;color:#3a3228;}
+
+.hl{background:linear-gradient(120deg,rgba(200,150,30,0.1),rgba(200,150,30,0.03));border:1px solid rgba(200,150,30,0.28);padding:15px 18px;margin-bottom:16px;font-size:13px;line-height:1.9;}
+.hl strong{color:#8a6200;}
+
+.divider{display:flex;align-items:center;gap:12px;margin:24px 0 18px;color:var(--gray);font-size:10px;letter-spacing:2.5px;font-weight:700;text-transform:uppercase;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--light);}
+
+/* ── SCHEDULE TABLE ── */
+.tbl-wrap{overflow-x:auto;margin-bottom:18px;-webkit-overflow-scrolling:touch;}
+.sched{width:100%;border-collapse:collapse;font-size:11.5px;min-width:580px;}
+.sched th{padding:9px 8px;text-align:center;font-weight:700;font-size:10px;letter-spacing:0.5px;color:white;}
+.sched th.th-time{background:var(--ink);}
+.sched th.th-mon{background:var(--mon);}
+.sched th.th-tue{background:var(--tue);}
+.sched th.th-wed{background:var(--wed);}
+.sched th.th-thu{background:var(--thu);}
+.sched th.th-fri{background:var(--fri);}
+.sched th.th-sat{background:var(--sat);}
+.sched th.th-sun{background:var(--sun);}
+.sched td{padding:8px 7px;border:1px solid var(--light);vertical-align:top;text-align:center;line-height:1.55;font-size:11px;}
+.sched .tc{font-family:monospace;font-size:10px;color:var(--gold);font-weight:700;background:rgba(26,18,9,0.04);text-align:left;padding-left:8px;white-space:nowrap;}
+.c-cram{background:rgba(26,18,9,0.88);color:var(--gold-l);font-weight:700;font-size:10px;padding:5px 3px;letter-spacing:0.3px;}
+.c-study{background:rgba(200,150,30,0.08);}
+.c-review{background:rgba(46,107,62,0.08);color:#1a4024;}
+.c-rest{background:transparent;color:#aaa;font-size:10px;}
+.c-free{background:rgba(91,30,107,0.06);color:#5b1e6b;font-size:10px;}
+.c-sleep{background:rgba(15,12,7,0.06);color:var(--gray);font-size:10px;}
+
+/* ── DAY TABS ── */
+.day-tabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:16px;}
+.day-tab{border:none;padding:7px 14px;font-family:'Noto Sans TC',sans-serif;font-size:12px;font-weight:700;cursor:pointer;opacity:0.4;transition:opacity .15s;}
+.day-tab:hover{opacity:0.7;}
+.day-tab.active{opacity:1;}
+.day-tab.d1{background:var(--mon);color:white;}
+.day-tab.d2{background:var(--tue);color:white;}
+.day-tab.d3{background:var(--wed);color:white;}
+.day-tab.d4{background:var(--thu);color:white;}
+.day-tab.d5{background:var(--fri);color:white;}
+.day-tab.d6{background:var(--sat);color:white;}
+.day-tab.d7{background:var(--sun);color:white;}
+.day-detail{display:none;}
+.day-detail.active{display:block;}
+
+.dtbl{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:14px;}
+.dtbl thead tr{background:var(--ink);color:var(--paper);}
+.dtbl th{padding:10px 12px;text-align:left;font-weight:600;font-size:11px;letter-spacing:0.3px;}
+.dtbl td{padding:9px 12px;border-bottom:1px solid var(--light);vertical-align:top;line-height:1.75;}
+.dtbl tr:nth-child(even) td{background:rgba(236,230,216,0.25);}
+.tc2{color:var(--gold);font-weight:700;white-space:nowrap;font-family:monospace;font-size:11px;}
+.bge{display:inline-block;padding:2px 8px;font-size:9.5px;font-weight:700;letter-spacing:0.3px;margin-right:3px;}
+.bge-cram{background:var(--ink);color:var(--gold-l);}
+.bge-math{background:#dbeafe;color:#1e3a8a;}
+.bge-cn{background:#fef3c7;color:#78350f;}
+.bge-en{background:#dcfce7;color:#14532d;}
+.bge-sci{background:#fce7f3;color:#831843;}
+.bge-soc{background:#ede9fe;color:#4c1d95;}
+.bge-rev{background:#d1fae5;color:#065f46;}
+.bge-rest{background:var(--light);color:var(--gray);}
+.bge-sleep{background:var(--ink);color:rgba(245,239,227,0.5);}
+
+/* ── TIMELINE ── */
+.timeline{position:relative;padding-left:26px;}
+.timeline::before{content:'';position:absolute;left:5px;top:0;bottom:0;width:2px;background:var(--light);}
+.tl-item{position:relative;margin-bottom:32px;}
+.tl-dot{width:11px;height:11px;background:var(--gold);border-radius:50%;position:absolute;left:-23px;top:5px;}
+.tl-phase{font-size:9px;font-weight:700;letter-spacing:2.5px;color:var(--gold);margin-bottom:3px;}
+.tl-title{font-family:'Noto Serif TC',serif;font-size:18px;font-weight:700;margin-bottom:7px;}
+.tl-body{font-size:13px;line-height:1.9;color:#4a4038;}
+.tl-body strong{color:var(--ink);}
+
+/* ── METHOD GRID ── */
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;}
+@media(max-width:480px){.mgrid{grid-template-columns:1fr;}}
+.mcard{background:var(--white);border:1px solid var(--light);padding:18px;}
+.mnum{font-family:'Noto Serif TC',serif;font-size:38px;font-weight:900;color:var(--light);line-height:1;margin-bottom:5px;}
+.mcard h4{font-size:13.5px;font-weight:700;margin-bottom:6px;}
+.mcard p{font-size:12.5px;line-height:1.9;color:#4a4038;}
+
+/* ── SPACED REP ── */
+.sr-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:20px;}
+@media(max-width:480px){.sr-grid{grid-template-columns:repeat(3,1fr);}}
+.sr-box{background:var(--white);border:1px solid var(--light);padding:13px 8px;text-align:center;}
+.sr-lbl{font-size:9px;color:var(--gray);font-weight:700;letter-spacing:0.5px;margin-bottom:4px;}
+.sr-num{font-family:'Noto Serif TC',serif;font-size:26px;font-weight:900;color:var(--gold);line-height:1;margin-bottom:3px;}
+.sr-desc{font-size:10px;color:var(--ink);line-height:1.55;}
+
+/* ── ANXIETY ── */
+.a-box{background:var(--ink);color:var(--paper);padding:26px 28px;margin-bottom:16px;}
+.a-box h3{font-family:'Noto Serif TC',serif;font-size:17px;font-weight:900;margin-bottom:12px;color:var(--gold-l);}
+.a-box p{font-size:13px;line-height:1.9;color:rgba(245,239,227,0.78);}
+.a-tips{margin-top:16px;list-style:none;}
+.a-tips li{padding:9px 0 9px 18px;border-bottom:1px solid rgba(245,239,227,0.08);font-size:12.5px;color:rgba(245,239,227,0.7);position:relative;line-height:1.75;}
+.a-tips li::before{content:'▸';position:absolute;left:0;color:var(--gold-l);}
+
+/* ── CHECKLIST ── */
+.chklist{list-style:none;}
+.chklist li{display:flex;align-items:flex-start;gap:10px;padding:11px 14px;border-bottom:1px solid var(--light);font-size:13px;line-height:1.75;cursor:pointer;transition:background .12s;user-select:none;}
+.chklist li:hover{background:rgba(200,150,30,0.05);}
+.chklist li.done{color:var(--gray);text-decoration:line-through;}
+.chkbox{width:17px;height:17px;border:2px solid var(--gold);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--gold);}
+.chklist li.done .chkbox{background:var(--gold);color:var(--ink);}
+
+/* ── TRACKER ── */
+.trk-bar-wrap{background:var(--light);height:6px;margin-bottom:5px;}
+.trk-bar-fill{background:var(--gold);height:100%;transition:width .35s;}
+.trk-label{font-size:11px;color:var(--gray);margin-bottom:20px;letter-spacing:0.3px;}
+.week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-bottom:20px;}
+.wday{background:var(--white);border:1px solid var(--light);padding:8px 4px;text-align:center;}
+.wday.today{border-color:var(--gold);}
+.wd-name{font-size:9px;font-weight:700;color:var(--gray);margin-bottom:3px;}
+.wd-pct{font-family:'Noto Serif TC',serif;font-size:16px;font-weight:900;color:var(--light);line-height:1.2;}
+.wd-pct.g{color:var(--green);}
+.wd-pct.m{color:var(--gold);}
+.trk-tbl{width:100%;border-collapse:collapse;font-size:12.5px;}
+.trk-tbl thead tr{background:var(--ink);color:var(--paper);}
+.trk-tbl th{padding:9px 12px;text-align:left;font-size:10.5px;letter-spacing:0.5px;}
+.trk-tbl td{padding:10px 12px;border-bottom:1px solid var(--light);vertical-align:top;line-height:1.7;}
+.trk-tbl tr:nth-child(even) td{background:rgba(236,230,216,0.25);}
+.trk-chk{width:20px;height:20px;border:2px solid var(--gold);display:inline-flex;align-items:center;justify-content:center;font-size:11px;color:var(--gold);}
+.cat-tag{font-size:9px;font-weight:700;padding:2px 7px;color:white;letter-spacing:0.3px;}
+.trk-done{text-decoration:line-through;color:var(--gray);}
+.dad-msg{background:var(--ink);color:var(--gold-l);padding:13px 15px;margin-bottom:16px;border-left:3px solid var(--gold);display:none;}
+.dad-msg-lbl{font-size:9px;letter-spacing:2px;opacity:0.45;margin-bottom:5px;}
+.dad-msg-txt{font-size:13px;line-height:1.8;color:rgba(253,250,243,0.9);}
+textarea{width:100%;border:1px solid var(--light);padding:9px 11px;font-family:'Noto Sans TC',sans-serif;font-size:13px;color:var(--ink);background:var(--paper);resize:vertical;outline:none;line-height:1.75;min-height:72px;}
+textarea:focus{border-color:var(--gold);background:var(--white);}
+textarea::placeholder{color:#c0b8a8;}
+.btn{display:inline-flex;align-items:center;gap:5px;border:none;padding:9px 16px;font-family:'Noto Sans TC',sans-serif;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:0.5px;transition:all .15s;}
+.btn-gold{background:var(--gold);color:var(--ink);}
+.btn-dark{background:var(--ink);color:var(--gold-l);}
+.btn-light{background:var(--light);color:var(--gray);}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--green);color:white;padding:8px 18px;font-size:12px;font-weight:700;z-index:999;pointer-events:none;transition:transform .3s;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+
+/* ── DRILLS ── */
+.drills-row{background:var(--white);border:1px solid var(--light);padding:14px 16px;margin-bottom:8px;border-left:3px solid var(--gold);}
+.drills-row h4{font-size:13.5px;font-weight:700;margin-bottom:5px;}
+.drills-row p{font-size:12.5px;color:#4a4038;line-height:1.85;}
+
+@media(max-width:640px){
+  .hero{padding:36px 20px 30px;}
+  .sec{padding:20px 16px 40px;}
+  .a-box{padding:20px 22px;}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">
+    <div class="hero-tag">宥鈞專屬備考計畫</div>
+    <div class="hero-tag-sub">國中二年級 · 2025–2026</div>
+  </div>
+  <h1><span class="name">宥鈞，</span>燃起來。<span class="target">目標：台南第一高級中學</span></h1>
+  <div class="hero-motto">
+    會感到痛苦，就是讓你前進的養分。
+    <span class="sub">爸爸在旁邊，我們一起把這條路走完。</span>
+  </div>
+  <div class="hero-stats">
+    <div><span class="stat-num">4</span><span class="stat-lbl">週補習天數</span></div>
+    <div><span class="stat-num">3</span><span class="stat-lbl">補習科目</span></div>
+    <div><span class="stat-num">1</span><span class="stat-lbl">目標高中</span></div>
+    <div><span class="stat-num">週週</span><span class="stat-lbl">父子復盤</span></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav" id="main-nav">
+  <button class="active" onclick="sw('overview',this)">🎯 核心策略</button>
+  <button onclick="sw('weekly',this)">📊 一週總覽</button>
+  <button onclick="sw('daily',this)">⏰ 每日時間表</button>
+  <button onclick="sw('phases',this)">🗓 三階段備考</button>
+  <button onclick="sw('chinese',this)">📖 國文強化</button>
+  <button onclick="sw('spaced',this)">🔁 間隔複習</button>
+  <button onclick="sw('drills',this)">📚 評量刷題</button>
+  <button onclick="sw('wenyan',this)">📜 文言文攻略</button>
+  <button onclick="sw('anxiety',this)">💛 給宥鈞&爸爸</button>
+  <button onclick="sw('checklist',this)">✅ 每日打卡</button>
+  <button onclick="sw('tracker',this)">📋 爸爸回家看</button>
+</div>
+
+<!-- ══ 核心策略 ══ -->
+<div id="overview" class="sec active">
+  <div class="sec-title">🎯 核心策略</div>
+  <div class="sec-desc">補習已幫宥鈞打好英數國三科基礎，但真正的勝負在「補習之外的時間怎麼用」。</div>
+  <div class="hl"><strong>宥鈞的補習配置：</strong>週一英文（18:00–21:00）、週三數學（17:00–19:30）、週四國文（18:30–21:00）、週五英文（18:00–21:00）。自習時間的任務：<strong>補習前預備 + 補習後消化 + 弱科補強</strong>。</div>
+  <div class="card"><div class="card-title">🧠 觀念一：補習後20分鐘是記憶黃金時間</div><p>大腦在學完新東西後的20–30分鐘記憶最活躍。每次補習回到家，先用20分鐘默寫今天補習的重點。這個動作讓補習效果翻倍。</p></div>
+  <div class="card blue"><div class="card-title">⚡ 觀念二：番茄鐘切碎壓力</div><p>每個讀書單元 <strong>25分鐘專注 + 5分鐘休息</strong>。補習完很累的晚上，一個番茄就夠了，做到就是贏。</p></div>
+  <div class="card green"><div class="card-title">📦 觀念三：放學後第一件事永遠一樣</div><p>每天放學，第一件事就是花20分鐘「回想」今天的課——合上書本閉眼默想，再把記得的寫在便條紙上。這叫「主動提取」，記憶效果比再讀一遍強3倍。</p></div>
+  <div class="card red"><div class="card-title">📊 自習時間投資比例</div><p>🔢 <strong>數學 30%</strong>｜專攻錯題和應用題<br>📖 <strong>國文 25%</strong>｜每天20分鐘閱讀寫作<br>🔤 <strong>英文 20%</strong>｜主攻單字量累積<br>🔬 <strong>自然 13%</strong>｜整理觀念心智圖<br>🌏 <strong>社會 12%</strong>｜故事記憶法定期背</p></div>
+</div>
+
+<!-- ══ 一週總覽 ══ -->
+<div id="weekly" class="sec">
+  <div class="sec-title">📊 一週節奏總覽</div>
+  <div class="sec-desc">補習班考卷帶回家做，回家先做弱科，再做考卷，弱科優先。自然社會從頭整理，週二是主力深耕日。</div>
+  <div class="hl"><strong>節奏核心：</strong>回家先做 🔬 自然或 🌏 社會 → 再做補習班考卷 → 最後國文每日任務。</div>
+  <div class="tbl-wrap">
+    <table class="sched">
+      <thead><tr>
+        <th class="th-time">時間</th><th class="th-mon">週一<br>英文補習</th><th class="th-tue">週二<br>深耕日</th>
+        <th class="th-wed">週三<br>數學補習</th><th class="th-thu">週四<br>國文補習</th><th class="th-fri">週五<br>英文補習</th>
+        <th class="th-sat">週六<br>衝刺</th><th class="th-sun">週日<br>復盤</th>
+      </tr></thead>
+      <tbody>
+        <tr><td class="tc">放學–17:00</td><td class="c-review">🔄 回想<br>20分</td><td class="c-review">🔄 回想<br>20分</td><td class="c-review">🔄 回想<br>20分</td><td class="c-review">🔄 回想<br>20分</td><td class="c-review">🔄 回想<br>20分</td><td class="c-rest">—</td><td class="c-rest">—</td></tr>
+        <tr><td class="tc">17:00–17:45</td><td class="c-study">🔬 自然<br>章節題</td><td class="c-study">🔬 自然<br>深耕×2</td><td class="c-cram">↑ 數學補習<br>17:00開始</td><td class="c-study">🔬 自然<br>錯題複習</td><td class="c-study">🌏 社會<br>章節題</td><td class="c-study">🔬 自然<br>弱點攻堅</td><td class="c-free">家人<br>時間</td></tr>
+        <tr><td class="tc">17:45–18:00</td><td class="c-rest">晚餐</td><td class="c-study">🌏 社會<br>深耕×2</td><td class="c-cram">（進行中）</td><td class="c-rest">晚餐</td><td class="c-rest">晚餐</td><td class="c-study">🌏 社會<br>整理</td><td class="c-free">—</td></tr>
+        <tr><td class="tc">18:00–19:30</td><td class="c-cram">英文補習</td><td class="c-study">📖 國文<br>閱讀+仿寫</td><td class="c-cram">（進行中）</td><td class="c-study">📖 國文<br>閱讀練習</td><td class="c-cram">英文補習</td><td class="c-study">📖 國文<br>深度寫作</td><td class="c-free">下午<br>自由</td></tr>
+        <tr><td class="tc">19:30–21:00</td><td class="c-cram">（進行中）</td><td class="c-study">📝 補習<br>考卷</td><td class="c-study">📝 補習<br>考卷</td><td class="c-cram">國文補習<br>18:30</td><td class="c-cram">（進行中）</td><td class="c-study">📝 週六<br>小測</td><td class="c-review">🗣 復盤<br>30分</td></tr>
+        <tr><td class="tc">21:00–21:30</td><td class="c-review">🔄 消化<br>英文</td><td class="c-study">📒 考卷<br>錯題整理</td><td class="c-review">🔄 消化<br>數學</td><td class="c-review">🔄 消化<br>國文</td><td class="c-review">🔄 消化<br>英文</td><td class="c-rest">休息</td><td class="c-review">📅 規劃<br>下週</td></tr>
+        <tr><td class="tc">21:30–22:30</td><td class="c-study">📝 英文<br>考卷</td><td class="c-sleep">💤 22:00<br>就寢</td><td class="c-sleep">💤 22:30<br>就寢</td><td class="c-study">📖 國文<br>+單字</td><td class="c-study">📝 英文<br>考卷</td><td class="c-sleep">💤 22:30<br>就寢</td><td class="c-sleep">💤 22:30<br>就寢</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card red"><div class="card-title">⚠️ 補習班考卷正確順序</div><p><strong>① 當日回想 → ② 自然或社會（弱科）→ ③ 晚餐 → ④ 補習 → ⑤ 考卷</strong><br><br>補習班考卷不是當天一定要做完。週二沒有補習，有充裕時間把考卷做完並整理錯題。<strong>弱科優先，考卷排後面。</strong></p></div>
+  <div class="card green"><div class="card-title">🔬 自然和社會都要從頭整理</div><p>每週一章按課本順序推進，一章一章來。不要一次想把整本搞懂，每週把一章從「不會」變成「會」，一學期就整理完整本。</p></div>
+</div>
+
+<!-- ══ 每日時間表 ══ -->
+<div id="daily" class="sec">
+  <div class="sec-title">⏰ 每日詳細時間表</div>
+  <div class="sec-desc">點擊星期查看那天的完整安排。</div>
+  <div class="day-tabs">
+    <button class="day-tab d1 active" onclick="sd('d1',this)">週一</button>
+    <button class="day-tab d2" onclick="sd('d2',this)">週二</button>
+    <button class="day-tab d3" onclick="sd('d3',this)">週三</button>
+    <button class="day-tab d4" onclick="sd('d4',this)">週四</button>
+    <button class="day-tab d5" onclick="sd('d5',this)">週五</button>
+    <button class="day-tab d6" onclick="sd('d6',this)">週六</button>
+    <button class="day-tab d7" onclick="sd('d7',this)">週日</button>
+  </div>
+  <div id="d1" class="day-detail active">
+    <div class="hl"><strong>週一：</strong>英文補習日（18:00–21:00）。補習前先做自然章節題，補習後立刻消化。</div>
+    <table class="dtbl"><thead><tr><th>時間</th><th>任務</th><th>說明</th></tr></thead><tbody>
+      <tr><td class="tc2">放學–16:50</td><td><span class="bge bge-rev">🔄 回想</span></td><td>合上書包，默想今天所有課，記在便條紙（20分）</td></tr>
+      <tr><td class="tc2">16:50–17:30</td><td><span class="bge bge-sci">自然</span>章節題</td><td>做本週自然章節題10–15題，計時，對答案後記錯題</td></tr>
+      <tr><td class="tc2">17:30–17:55</td><td><span class="bge bge-rest">晚餐</span></td><td>吃飯放鬆</td></tr>
+      <tr><td class="tc2">18:00–21:00</td><td><span class="bge bge-cram">英文補習</span></td><td>全力專注，不懂的當場問清楚</td></tr>
+      <tr><td class="tc2">21:00–21:20</td><td><span class="bge bge-rev">🔄 消化</span></td><td>默寫今天英文補習重點（文法、單字、句型）</td></tr>
+      <tr><td class="tc2">21:20–21:45</td><td><span class="bge bge-cn">國文</span>每日</td><td>朗讀10分鐘 + 好句抄寫一句</td></tr>
+      <tr><td class="tc2">21:45–22:10</td><td>📝 英文考卷</td><td>補習班帶回的考卷，計時作答，B/X類記錯題本</td></tr>
+      <tr><td class="tc2">22:30</td><td><span class="bge bge-sleep">💤 就寢</span></td><td>睡滿8小時</td></tr>
+    </tbody></table>
+  </div>
+  <div id="d2" class="day-detail">
+    <div class="hl"><strong>週二：</strong>無補習，整週最寶貴的深耕日。主攻自然+社會，做考卷，長版國文練習。</div>
+    <table class="dtbl"><thead><tr><th>時間</th><th>任務</th><th>說明</th></tr></thead><tbody>
+      <tr><td class="tc2">放學–16:50</td><td><span class="bge bge-rev">🔄 回想</span></td><td>默想今天課程</td></tr>
+      <tr><td class="tc2">16:50–17:30</td><td><span class="bge bge-rest">晚餐休息</span></td><td>充分休息充電</td></tr>
+      <tr><td class="tc2">17:30–18:20</td><td><span class="bge bge-sci">自然</span>深耕×2</td><td>針對弱點章節，回課本找觀念，畫心智圖</td></tr>
+      <tr><td class="tc2">18:20–18:30</td><td><span class="bge bge-rest">休息</span></td><td>走動喝水</td></tr>
+      <tr><td class="tc2">18:30–19:20</td><td><span class="bge bge-soc">社會</span>深耕×2</td><td>用故事記憶法整理本週社會章節</td></tr>
+      <tr><td class="tc2">19:20–20:10</td><td><span class="bge bge-cn">國文</span>長版</td><td>讀課外文章800–1200字，三句話總結主旨，仿寫一段</td></tr>
+      <tr><td class="tc2">20:10–21:00</td><td>📝 補習考卷</td><td>把帶回家的數學或英文考卷做完，整理錯題</td></tr>
+      <tr><td class="tc2">22:00前</td><td><span class="bge bge-sleep">💤 就寢</span></td><td>週二無補習，早睡</td></tr>
+    </tbody></table>
+  </div>
+  <div id="d3" class="day-detail">
+    <div class="hl"><strong>週三：</strong>數學補習日（17:00–19:30）。補習較早，回家後有時間做英文和國文。</div>
+    <table class="dtbl"><thead><tr><th>時間</th><th>任務</th><th>說明</th></tr></thead><tbody>
+      <tr><td class="tc2">放學–16:50</td><td><span class="bge bge-rev">🔄 回想</span></td><td>默想今天課程</td></tr>
+      <tr><td class="tc2">17:00–19:30</td><td><span class="bge bge-cram">數學補習</span></td><td>全力專注，把錯題和解法記在補習筆記</td></tr>
+      <tr><td class="tc2">19:30–19:50</td><td><span class="bge bge-rest">晚餐</span></td><td>回家吃飯放鬆</td></tr>
+      <tr><td class="tc2">19:50–20:10</td><td><span class="bge bge-rev">🔄 消化</span></td><td>默寫今天數學補習重點公式、解題步驟</td></tr>
+      <tr><td class="tc2">20:10–20:40</td><td><span class="bge bge-en">英文</span>複習</td><td>複習週一英文補習內容，整理不熟的文法</td></tr>
+      <tr><td class="tc2">20:40–21:00</td><td><span class="bge bge-cn">國文</span>每日</td><td>朗讀10分鐘 + 好句抄寫</td></tr>
+      <tr><td class="tc2">22:30</td><td><span class="bge bge-sleep">💤 就寢</span></td><td>—</td></tr>
+    </tbody></table>
+  </div>
+  <div id="d4" class="day-detail">
+    <div class="hl"><strong>週四：</strong>國文補習日（18:30–21:00）。補習前有時間做自然複習，補習後消化國文技巧。</div>
+    <table class="dtbl"><thead><tr><th>時間</th><th>任務</th><th>說明</th></tr></thead><tbody>
+      <tr><td class="tc2">放學–16:50</td><td><span class="bge bge-rev">🔄 回想</span></td><td>默想今天課程</td></tr>
+      <tr><td class="tc2">16:50–17:30</td><td><span class="bge bge-sci">自然</span>錯題</td><td>翻出週一的自然章節錯題，重新作答，不看答案</td></tr>
+      <tr><td class="tc2">17:30–18:00</td><td><span class="bge bge-en">英文</span>自習</td><td>複習本週英文重點，做1–2題閱讀練習</td></tr>
+      <tr><td class="tc2">18:00–18:25</td><td><span class="bge bge-rest">晚餐</span></td><td>—</td></tr>
+      <tr><td class="tc2">18:30–21:00</td><td><span class="bge bge-cram">國文補習</span></td><td>閱讀理解技巧+作文指導，把老師教的記下來</td></tr>
+      <tr><td class="tc2">21:00–21:20</td><td><span class="bge bge-rev">🔄 消化</span></td><td>默寫今天國文補習學到的技巧、關鍵例句</td></tr>
+      <tr><td class="tc2">21:20–21:40</td><td><span class="bge bge-en">英文</span>單字</td><td>15個新 + 10個舊</td></tr>
+      <tr><td class="tc2">22:30</td><td><span class="bge bge-sleep">💤 就寢</span></td><td>—</td></tr>
+    </tbody></table>
+  </div>
+  <div id="d5" class="day-detail">
+    <div class="hl"><strong>週五：</strong>英文補習日（18:00–21:00）。補習前做社會章節題，補習後做收尾整合。</div>
+    <table class="dtbl"><thead><tr><th>時間</th><th>任務</th><th>說明</th></tr></thead><tbody>
+      <tr><td class="tc2">放學–16:50</td><td><span class="bge bge-rev">🔄 回想</span></td><td>默想今天課程</td></tr>
+      <tr><td class="tc2">16:50–17:30</td><td><span class="bge bge-soc">社會</span>章節題</td><td>做本週社會章節題10–15題，計時，整理錯題</td></tr>
+      <tr><td class="tc2">17:30–17:55</td><td><span class="bge bge-sci">自然</span>整理</td><td>把本週自然筆記整理好，確認還有沒有不懂的</td></tr>
+      <tr><td class="tc2">18:00–21:00</td><td><span class="bge bge-cram">英文補習</span></td><td>本週第二次英文補習</td></tr>
+      <tr><td class="tc2">21:00–21:20</td><td><span class="bge bge-rev">🔄 消化</span></td><td>默寫今天英文補習重點</td></tr>
+      <tr><td class="tc2">21:20–21:40</td><td><span class="bge bge-cn">國文</span>每日</td><td>朗讀 + 好句抄寫</td></tr>
+      <tr><td class="tc2">21:45–22:15</td><td>📝 英文考卷</td><td>補習班帶回的考卷，整理錯題</td></tr>
+      <tr><td class="tc2">22:30</td><td><span class="bge bge-sleep">💤 就寢</span></td><td>—</td></tr>
+    </tbody></table>
+  </div>
+  <div id="d6" class="day-detail">
+    <div class="hl"><strong>週六：</strong>衝刺整合日。用模擬小測找出哪裡還不會，深化弱點。</div>
+    <table class="dtbl"><thead><tr><th>時間</th><th>任務</th><th>說明</th></tr></thead><tbody>
+      <tr><td class="tc2">08:30–09:20</td><td><span class="bge bge-sci">自然</span>攻堅</td><td>弱點地圖×最多的章節，集中火力</td></tr>
+      <tr><td class="tc2">09:20–09:30</td><td><span class="bge bge-rest">休息</span></td><td>—</td></tr>
+      <tr><td class="tc2">09:30–10:00</td><td><span class="bge bge-cn">國文</span>深度閱讀</td><td>讀課外文章，做閱讀理解練習</td></tr>
+      <tr><td class="tc2">10:00–10:30</td><td><span class="bge bge-soc">社會</span>整理</td><td>整理本週社會章節，畫故事線或地圖</td></tr>
+      <tr><td class="tc2">10:30–11:30</td><td>📝 週六小測</td><td>各科章節各3–5題，計時30分鐘，不看書</td></tr>
+      <tr><td class="tc2">11:30後</td><td><span class="bge bge-rest">自由</span></td><td>下午自由活動，大腦需要充電</td></tr>
+    </tbody></table>
+  </div>
+  <div id="d7" class="day-detail">
+    <div class="hl"><strong>週日：</strong>父子復盤日。整週最重要的30分鐘，不是讀書，是思考和規劃。</div>
+    <table class="dtbl"><thead><tr><th>時間</th><th>任務</th><th>說明</th></tr></thead><tbody>
+      <tr><td class="tc2">下午</td><td><span class="bge bge-rest">充電</span></td><td>睡覺、運動、打球，完全放鬆</td></tr>
+      <tr><td class="tc2">19:00–19:30</td><td>🗣 父子復盤</td><td>三步驟：收穫→困難→下週規劃</td></tr>
+      <tr><td class="tc2">19:30–20:00</td><td>📅 規劃下週</td><td>有考試的科目往前排，更新弱點地圖</td></tr>
+    </tbody></table>
+    <div class="card green"><div class="card-title">🗣 父子復盤三步驟</div><p><strong>10分鐘｜這週的收穫：</strong>宥鈞說說學了什麼、做到了什麼。爸爸聽，不評判。<br><br><strong>10分鐘｜這週的困難：</strong>哪天最累？哪科最卡？找原因，不責備。<br><br><strong>10分鐘｜下週怎麼做：</strong>下週有什麼考試？兩個人一起決定。</p></div>
+  </div>
+</div>
+
+<!-- ══ 三階段 ══ -->
+<div id="phases" class="sec">
+  <div class="sec-title">🗓 三階段備考路線</div>
+  <div class="sec-desc">從現在到會考，三個目標完全不同的階段。現在做對的事，到了國三才能輕鬆收割。</div>
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-phase">PHASE 01 · 現在 → 國二結束</div><div class="tl-title">🌱 地基建設期</div><div class="tl-body">目標：<strong>把國二的課學扎實，補上國一的缺口。</strong><br><br>• <strong>數學：</strong>每次補習後整理錯題，計算要快且準確。<br>• <strong>英文：</strong>兩天補習很有優勢，自習時間衝單字量，目標2000個核心詞彙。<br>• <strong>國文：</strong>每天20分鐘固定任務，培養語感和寫作習慣。<br>• <strong>自然/社會：</strong>兩科都要從頭整理，每週一章按課本順序推進。<br>• <strong>月底健檢：</strong>每月最後一個週日，父子一起找出最弱的兩科，下個月重點攻。</div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-phase">PHASE 02 · 國三上學期</div><div class="tl-title">⚡ 系統整合期</div><div class="tl-body">目標：<strong>把所有知識串起來，開始計時做模擬考。</strong><br><br>• 每科整理「終極筆記」，一科一本，只寫最重要的東西。<br>• 開始做歷屆會考真題，培養考試節奏感和時間分配。<br>• 國文作文系統化練習：審題→構思→起承轉合→收尾，每月兩篇。<br>• 每月一次完整模擬考（在家計時），分析各科趨勢。</div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-phase">PHASE 03 · 國三下 → 會考前</div><div class="tl-title">🔥 決勝衝刺期</div><div class="tl-body">目標：<strong>鞏固強科，集中消滅弱點，進入最佳應考狀態。</strong><br><br>• 全力做歷屆真題，每一題都搞懂，錯的不放過。<br>• 90%複習，10%補弱點，不再學新東西。<br>• 會考前三週只看自己的錯題本，不做新題。<br>• <strong>爸爸這時候最重要的事：情緒穩定，陪在身邊，不加壓。</strong></div></div>
+  </div>
+</div>
+
+<!-- ══ 國文強化 ══ -->
+<div id="chinese" class="sec">
+  <div class="sec-title">📖 國文強化計畫</div>
+  <div class="sec-desc">國文不穩定，根本原因往往不是「不夠用功」，而是語感還沒建立。這一頁把高手培養語感的真正方式說清楚。</div>
+  <div class="hl"><strong>會考國文殘酷事實：</strong>近幾年考題平均9000多字，閱讀理解占七至八成。<strong>狂背字音字形已經不夠</strong>，真正的分數來自閱讀理解能力，只能靠長期積累。</div>
+  <div class="divider">高手培養語感的核心秘密</div>
+  <div class="card" style="border-left-color:var(--gold)"><div class="card-title">🔑 語感是什麼？為什麼讓成績穩定？</div><p>語感是對文字的「直覺」。看到一個句子，不用分析也能感覺到它的重量和情緒。這個直覺不是天生的，是靠大量接觸好文字慢慢養出來的。<br><br>背誦大量字音字形會讓人短時間感覺進步，但真正要突破還是要靠閱讀理解策略——學習曲線一開始很慢，但一旦掌握，就會在某個不經意的瞬間躍升到另一個層次。</p></div>
+  <div class="card blue"><div class="card-title">📌 高手都在做的五件日常小事</div><p><strong>① 每天大聲朗讀10分鐘</strong><br>耳朵、嘴巴、大腦同時運作，語感進入身體的速度比用眼睛看快三倍。每篇好文章讀三天。<br><br><strong>② 遇到好句子，停下來問一個問題</strong><br>「這句話為什麼讓我有感覺？」是修辭？是情緒？還是對比？把答案寫在好句筆記旁邊。<br><br><strong>③ 讀完一篇文章，用自己的話說主旨</strong><br>問自己「為什麼？」「如何？」「這樣說合理嗎？」訓練批判思考。<br><br><strong>④ 仿寫優秀句子</strong><br>讀到精彩的段落，試著不看原文自己改寫，透過模仿把優秀作品的語感內化為自己的。<br><br><strong>⑤ 把文章和生活連結</strong><br>讀到寫親情的文章，想想爸爸做過的一件讓自己感動的事。文章連上記憶，就很難忘記。</p></div>
+  <div class="divider">每天的國文時間分配</div>
+  <div class="mgrid">
+    <div class="mcard"><div class="mnum">①</div><h4>朗讀 10分鐘【每天必做】</h4><p>課文或散文大聲念出來。文言文的節奏感只有靠嘴巴才念得出來。</p></div>
+    <div class="mcard"><div class="mnum">②</div><h4>好句抄寫【每天睡前】</h4><p>從任何地方挑一句有感覺的句子，抄進好句筆記，旁邊記「這句話為什麼好」。</p></div>
+    <div class="mcard"><div class="mnum">③</div><h4>仿寫 10分鐘【週一三五】</h4><p>選好句筆記裡的一個句子，換個主題仿照結構寫一段。不需要靈感，只需要模仿。</p></div>
+    <div class="mcard"><div class="mnum">④</div><h4>課外閱讀【週二一篇】</h4><p>讀完三句話總結：主旨是什麼、作者用了什麼寫法、哪一句最有感覺。</p></div>
+    <div class="mcard"><div class="mnum">⑤</div><h4>作文練習【每月兩篇】</h4><p>計時50分鐘。爸爸讀完說一個最好的地方，討論一個最需要改的地方。不要全改。</p></div>
+    <div class="mcard"><div class="mnum">＋</div><h4>好讀周報【每週一篇】</h4><p>整理50字摘要+150字感受，一則好新聞可以套用多道作文題目。</p></div>
+  </div>
+  <div class="divider">書單 — 依難易度</div>
+  <div class="card"><div class="card-title">📚 第一層：現在開始</div><p><strong>🥇 林清玄散文精選</strong>｜最容易讀進去，仿寫日常觀察→感悟的結構<br><strong>🥇 琦君散文集</strong>｜親情寫作範本，練情感表達<br><strong>🥈 城南舊事 林海音</strong>｜童年視角，練敘事帶情感</p></div>
+  <div class="card blue"><div class="card-title">📚 第二層：語感進階</div><p><strong>張曉風精選集</strong>｜文字有深度，仿寫對標考試文風<br><strong>目送 龍應台</strong>｜讀完練習「找出這篇的核心情感是什麼」</p></div>
+  <div class="card green"><div class="card-title">📚 第三層：國三加入</div><p><strong>生活十講 蔣勛</strong>｜學習有立場的議論寫作<br><strong>親愛的安德烈 龍應台</strong>｜議論散文最佳範本</p></div>
+  <div class="divider">閱讀理解答題策略</div>
+  <div class="card red"><div class="card-title">⚠️ 最常見的錯誤：用感覺選答案</div><p>閱讀理解最容易犯的錯，是「這個選項感覺對」就選，但沒有回文章找依據。每次做錯，要找到文章裡哪一句話是正確答案的依據，然後問：「我為什麼沒看到這句話？」</p></div>
+  <div class="card"><div class="card-title">🎯 五步驟解題法</div><p><strong>① 先讀題目，不讀文章</strong><br><strong>② 快速掃描結構：</strong>首段→末段→各段首句<br><strong>③ 帶著問題精讀：</strong>只讀跟題目有關的段落<br><strong>④ 刪去法：</strong>先刪明顯錯的，不選感覺對但沒根據的<br><strong>⑤ 回文驗證：</strong>找到原文依據才送出</p></div>
+  <div class="card blue"><div class="card-title">✍️ 作文黃金結構</div><p><strong>【起】</strong>150字：故事或反問開頭，引出主題<br><strong>【承】</strong>200字：第一個論點，舉親身經歷<br><strong>【轉】</strong>200字：深化或對比，不是流水帳<br><strong>【合】</strong>150字：回應開頭，首尾呼應<br><br>目標：<strong>700–800字，字跡工整，每段縮兩格</strong></p></div>
+  <div class="card" style="border-left-color:var(--gold)"><div class="card-title">💡 給爸爸：怎麼陪宥鈞讀國文最有效</div><p>每週一次，父子一起讀同一篇散文（15分鐘），讀完各自說：「我覺得這篇最好的句子是哪一句，為什麼。」不需要標準答案，只是讓宥鈞知道<strong>爸爸也在讀文章、爸爸也在感受文字</strong>。語感是在這種日常中悄悄長出來的。</p></div>
+</div>
+
+<!-- ══ 間隔複習 ══ -->
+<div id="spaced" class="sec">
+  <div class="sec-title">🔁 間隔複習系統</div>
+  <div class="sec-desc">在「快要忘記」的時間點複習，才是記憶效率最高的做法。</div>
+  <div class="hl"><strong>艾賓浩斯遺忘曲線：</strong>學完24小時後忘記約40%，一週後忘記約70%。只要在關鍵時間點複習，記憶就能刷新並存入長期記憶。</div>
+  <div class="sr-grid">
+    <div class="sr-box"><div class="sr-lbl">學習當天</div><div class="sr-num">D0</div><div class="sr-desc">放學20分鐘主動回想</div></div>
+    <div class="sr-box"><div class="sr-lbl">隔天</div><div class="sr-num">D+1</div><div class="sr-desc">快速翻筆記確認</div></div>
+    <div class="sr-box"><div class="sr-lbl">三天後</div><div class="sr-num">D+3</div><div class="sr-desc">用自己的話重新解釋</div></div>
+    <div class="sr-box"><div class="sr-lbl">一週後</div><div class="sr-num">D+7</div><div class="sr-desc">做相關練習題測試</div></div>
+    <div class="sr-box"><div class="sr-lbl">一個月後</div><div class="sr-num">D+30</div><div class="sr-desc">最後確認進長期記憶</div></div>
+  </div>
+  <div class="card"><div class="card-title">📓 錯題本系統</div><p><strong>練習後：</strong>把答錯的題目抄到錯題本，旁邊寫日期和錯誤原因（不懂概念 / 粗心計算）。<br><br><strong>每週六小測：</strong>翻出這週所有錯題重新做，不看解答。能做出來打勾，還是不會的用紅筆圈。<br><br><strong>紅圈題目：</strong>下週繼續考自己，連續兩次都對才算真正學會。</p></div>
+  <div class="card blue"><div class="card-title">📱 工具建議</div><p><strong>Anki（免費）：</strong>英文單字、國文成語，演算法自動安排複習時間。<br><strong>便利貼：</strong>書桌旁貼本週要記的3件事，每天起床看一眼。<br><strong>紙本週計畫表：</strong>睡前打勾確認，比手機APP更有成就感。</p></div>
+</div>
+
+<!-- ══ 評量刷題 ══ -->
+<div id="drills" class="sec">
+  <div class="sec-title">📚 刷題系統 × 章節題目資源</div>
+  <div class="sec-desc">自然社會兩科從頭整理，補習班考卷帶回家做，章節題目精準補強弱點。</div>
+  <div class="hl"><strong>三層刷題架構：</strong>① 補習班考卷（英數，帶回家）→ 弱科優先再做<br>② 市面全科評量（國文+自然+社會）→ 找出弱點章節<br>③ 章節專攻題目（自然+社會）→ 一週一章，精準補強</div>
+  <div class="divider">錯題分類法（每次做完都這樣）</div>
+  <div class="card green"><div class="card-title">三色分類 + 弱點地圖</div><p><strong>🟢 C（粗心）：</strong>下次注意，不用做筆記。<br><strong>🟡 B（觀念模糊）：</strong>最重要，<strong>一定進錯題本</strong>。<br><strong>🔴 X（完全不會）：</strong>先查觀念，寫進錯題本，弱點地圖這章打「×」。<br><br><strong>弱點地圖：</strong>同一章節累積3個×，下次週二就專攻那一章。</p></div>
+  <div class="card red"><div class="card-title">錯題本格式（每題都這樣寫）</div><p><strong>① 章節標記</strong>（例：自然三上 第2章）<br><strong>② 題目摘要</strong><br><strong>③ 我的錯誤 + 為什麼這樣想</strong><br><strong>④ 正確觀念（一句話）</strong><br><strong>⑤ 複習打勾欄：</strong>D+3 □　D+7 □　D+30 □</p></div>
+  <div class="divider">章節題目資源清單</div>
+  <div class="card blue"><div class="card-title">🌐 線上免費資源</div><p><strong>均一教育平台 junyiacademy.org</strong><br>免費，選科目→選年級→選章節，大量選擇題附解析，最推薦。<br><br><strong>臺灣學習網 elearn.ntpc.edu.tw</strong><br>新北市教育局，各科各章節練習題，直接對應課本單元。<br><br><strong>酷課雲 cooc.ntpc.edu.tw</strong><br>臺北市教育局，可按章節篩選出題附解析。<br><br><strong>教育部學習平台 learnhost.moe.gov.tw</strong><br>官方題庫，各科各年級，選章節練習，完全免費。</p></div>
+  <div class="card"><div class="card-title">📚 實體書推薦（書局可找到）</div><p><strong>翰林/康軒/南一「隨堂評量」</strong>｜每章一回，和課本進度同步，最標準的章節題。<br><br><strong>龍騰「單元挑戰」</strong>｜難度略高於課本，有基礎後再用來挑戰。<br><br><strong>建弘/全華「重點整理+章節練習」</strong>｜前半觀念整理、後半章節練習，自然科特別推薦。<br><br><strong>購買建議：</strong>先用線上資源找出最弱的2–3章，再針對那幾章買實體書。</p></div>
+  <div class="card" style="border-left-color:var(--gold)"><div class="card-title">💡 弱點地圖怎麼建</div><p>拿一張A4紙，把所有章節名稱列出來，每做錯一題就在那章旁邊劃一個「×」。週日父子復盤時，一起看弱點地圖，決定下週要攻哪一章。</p></div>
+</div>
+
+<!-- ══ 文言文 ══ -->
+<div id="wenyan" class="sec">
+  <div class="sec-title">📜 文言文應考攻略</div>
+  <div class="sec-desc">課內要熟，課外要有能力推斷。這份攻略專門針對考試題型，讓宥鈞用最有效率的方式拿穩分數。</div>
+  <div class="hl"><strong>會考文言文考什麼：</strong>字詞解釋（字義推斷）、句意理解、段落主旨、課外文言文閱讀理解。課內是基本分，課外才是拉開差距的地方。</div>
+  <div class="divider">課內文言文三層掌握法</div>
+  <div class="mgrid">
+    <div class="mcard"><div class="mnum">①</div><h4>逐字翻譯</h4><p>每篇課內文言文先自己逐句翻譯，不懂的字查注釋，翻錯的字記成字詞卡。</p></div>
+    <div class="mcard"><div class="mnum">②</div><h4>掌握常考虛詞</h4><p>「之、其、以、於、而、乃、則、者、也、焉」十個虛詞要背熟各種用法，是課外文言文的解題關鍵。</p></div>
+    <div class="mcard"><div class="mnum">③</div><h4>理解文章主旨</h4><p>用一句話說出主旨，再想想作者是讚美、批評、還是感嘆。這個練習讓課外文言文也能快速抓住方向。</p></div>
+    <div class="mcard"><div class="mnum">＋</div><h4>背誦關鍵句</h4><p>每篇挑2–3句最精華的句子背起來，應對默寫，也常直接作為選項判斷依據。</p></div>
+  </div>
+  <div class="card"><div class="card-title">🔑 課外文言文四步驟解題</div><p><strong>① 先看題目，圈出關鍵詞</strong><br><strong>② 讀第一句和最後一句</strong>：掌握頭尾再讀中間<br><strong>③ 遇到不懂的字，跳過先讀前後文推斷</strong><br><strong>④ 虛詞靠記憶，實詞靠上下文推理</strong></p></div>
+  <div class="card blue"><div class="card-title">📒 文言字詞卡格式</div><p>每讀一篇，把以下三類詞整理成卡片：<br><br><strong>① 古今義不同的詞</strong>（如：走=跑，妻子=妻子和孩子）<br><strong>② 一字多義的詞</strong>（如：以→用/因為/認為）<br><strong>③ 這篇我翻錯的字</strong><br><br>卡片正面：文言字詞+出處　背面：現代意思+例句</p></div>
+  <div class="card red"><div class="card-title">🏆 十大必背常考虛詞</div><p><strong>之：</strong>①的 ②他/它 ③去、到 ④取消句子獨立性<br><strong>以：</strong>①用、拿 ②因為 ③認為 ④來（目的）<br><strong>而：</strong>①然後（順接） ②卻（轉折） ③並且<br><strong>其：</strong>①他的/它的 ②那個 ③難道（反問）<br><strong>於：</strong>①在 ②向、對 ③比（比較）<br><strong>乃：</strong>①於是、就 ②才 ③竟然<br><strong>則：</strong>①就（順接） ②那麼 ③卻（轉折）<br><strong>者：</strong>①…的人 ②…的事 ③用於判斷句<br><strong>也：</strong>①句尾，表判斷或肯定語氣<br><strong>焉：</strong>①在這裡 ②句尾，表感嘆或陳述</p></div>
+</div>
+
+<!-- ══ 給宥鈞&爸爸 ══ -->
+<div id="anxiety" class="sec">
+  <div class="sec-title">💛 給宥鈞，也給爸爸</div>
+  <div class="sec-desc">讀書計畫再好，如果心態垮了也沒用。這一頁是整份計畫最重要的一頁。</div>
+  <div class="a-box">
+    <h3>給宥鈞的話</h3>
+    <p>你想考台南一中，代表你知道自己要什麼。這已經是很多人沒有的東西了。</p>
+    <p style="margin-top:10px;">你有時候很累、做不到計畫、然後覺得焦慮。這是正常的，每一個拼命的人都這樣。焦慮不是你的敵人，它是你在乎的證明。但不要讓它把你壓垮——<strong>計畫做不到60%，已經是成功的一天。</strong></p>
+    <ul class="a-tips">
+      <li>你不是在和別人比，你是在和昨天的自己比。每天進步一點點，複利是驚人的。</li>
+      <li>有補習的晚上累了，只做一個番茄鐘（25分鐘）就算達標。</li>
+      <li>感覺什麼都念不進去的時候，去散步10分鐘，不是逃避，是讓大腦重開機。</li>
+      <li>爸爸在台東工作，沒辦法每天陪在你旁邊，但他每天下班都會來看你今天做了什麼。</li>
+    </ul>
+  </div>
+  <div class="a-box">
+    <h3>給爸爸的話</h3>
+    <p>你願意花這麼多時間和宥鈞一起討論、一起規劃，這本身已經是他最大的優勢了。</p>
+    <ul class="a-tips">
+      <li>宥鈞沒達到計畫時，先問「今天遇到什麼困難？」不問「你為什麼沒做到？」</li>
+      <li>週六小測做得不好，那是「找到弱點」，不是「表現很差」，框架決定感受。</li>
+      <li>每週至少一次，複習之外只是陪他玩、聊天。讓他知道你愛的是宥鈞這個人，不是成績。</li>
+      <li>你的情緒穩定，是他最大的安全感。你越放鬆，他越有勇氣去拼。</li>
+      <li>進入國三衝刺期後，你最重要的工作是陪伴，不是加壓。</li>
+    </ul>
+  </div>
+  <div class="card green"><div class="card-title">💪 關於台南一中這個目標</div><p>台南一中不是遙不可及的夢，是一個需要充分準備的目標。<strong>每一天的小進步都是在靠近它。</strong><br><br>即使最後考的學校不一樣，宥鈞在這段時間培養的自律、學習方法、還有和爸爸並肩作戰的記憶，會跟著他一輩子。<strong>目標是方向，不是全部的意義。</strong></p></div>
+</div>
+
+<!-- ══ 每日打卡 ══ -->
+<div id="checklist" class="sec">
+  <div class="sec-title">✅ 每日打卡清單</div>
+  <div class="sec-desc">每完成一項就點擊打勾。睡前確認，讓自己看到今天做到了什麼。</div>
+  <div class="card" style="padding-bottom:8px;margin-bottom:16px;">
+    <div class="card-title">📋 每天必做</div>
+    <ul class="chklist" id="cl1">
+      <li onclick="toggleCL(this)"><div class="chkbox">✓</div><div>🔄 放學當日回想20分鐘：合上課本，默想今天每堂課，記在便條紙上</div></li>
+      <li onclick="toggleCL(this)"><div class="chkbox">✓</div><div>📖 國文① 朗讀10分鐘：大聲朗讀課文或散文，語感靠嘴巴練</div></li>
+      <li onclick="toggleCL(this)"><div class="chkbox">✓</div><div>✏️ 國文② 睡前抄一句好句子進「好句筆記」，旁邊寫「為什麼好」</div></li>
+      <li onclick="toggleCL(this)"><div class="chkbox">✓</div><div>🔤 英文單字：15個新 + 10個舊</div></li>
+      <li onclick="toggleCL(this)"><div class="chkbox">✓</div><div>💤 22:30前就寢，手機充電放書桌</div></li>
+    </ul>
+  </div>
+  <div class="card blue" style="padding-bottom:8px;margin-bottom:16px;">
+    <div class="card-title">📋 有補習的日子</div>
+    <ul class="chklist" id="cl2">
+      <li onclick="toggleCL(this)"><div class="chkbox">✓</div><div>📝 補習前：把這週的問題寫在便條紙，補習時主動問老師</div></li>
+      <li onclick="toggleCL(this)"><div class="chkbox">✓</div><div>🔄 補習後20分鐘：立刻默寫今天學到的重點，趁熱鞏固記憶</div></li>
+      <li onclick="toggleCL(this)"><div class="chkbox">✓</div><div>📒 補習班考卷：B/X類錯題記進錯題本（10分鐘）</div></li>
+    </ul>
+  </div>
+  <div class="card" style="border-left-color:var(--tue);padding-bottom:8px;margin-bottom:16px;">
+    <div class="card-title">📋 週二（深耕日）</div>
+    <ul class="chklist" id="cl3">
+      <li onclick="toggleCL(this)"><div class="chkbox">✓</div><div>🔬 自然深耕：弱點章節心智圖</div></li>
+      <li onclick="toggleCL(this)"><div class="chkbox">✓</div><div>🌏 社會深耕：故事記憶法整理本週章節</div></li>
+      <li onclick="toggleCL(this)"><div class="chkbox">✓</div><div>📖 課外散文一篇，寫下三句話摘要：主旨/手法/最好的句子</div></li>
+      <li onclick="toggleCL(this)"><div class="chkbox">✓</div><div>✍️ 仿寫10分鐘：從好句筆記選一句，換主題仿寫</div></li>
+    </ul>
+  </div>
+  <div class="card" style="border-left-color:var(--purple);padding-bottom:8px;">
+    <div class="card-title">📋 週六 &amp; 週日</div>
+    <ul class="chklist" id="cl4">
+      <li onclick="toggleCL(this)"><div class="chkbox">✓</div><div>📝 週六小測：各科章節各3–5題，不看書，計時30分鐘</div></li>
+      <li onclick="toggleCL(this)"><div class="chkbox">✓</div><div>✍️ 國文⑤（每月兩次）：歷屆會考題目計時50分鐘作文，請爸爸讀</div></li>
+      <li onclick="toggleCL(this)"><div class="chkbox">✓</div><div>🗣 週日父子復盤30分鐘：收穫→困難→下週規劃</div></li>
+      <li onclick="toggleCL(this)"><div class="chkbox">✓</div><div>✍️ 寫下這週三件做得好的事（不管多小都算）</div></li>
+      <li onclick="toggleCL(this)"><div class="chkbox">✓</div><div>📅 規劃下週，把有考試的科目往前安排</div></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ══ 爸爸回家看 ══ -->
+<div id="tracker" class="sec">
+  <div class="sec-title">📋 爸爸回家看</div>
+  <div class="sec-desc">宥鈞每完成一項就打勾，爸爸下班開手機一眼看到今天的狀況。</div>
+
+  <div class="dad-msg" id="dad-banner">
+    <div class="dad-msg-lbl">爸爸說</div>
+    <div class="dad-msg-txt" id="dad-banner-txt"></div>
+  </div>
+
+  <div class="trk-bar-wrap"><div class="trk-bar-fill" id="trk-bar" style="width:0%"></div></div>
+  <div class="trk-label" id="trk-label">今天完成 0 / 0 項</div>
+
+  <div id="trk-content"></div>
+
+  <div class="divider">本週概覽</div>
+  <div class="week-grid" id="week-grid"></div>
+
+  <div class="divider">爸爸今天的話給宥鈞</div>
+  <div style="background:var(--white);border:1px solid var(--light);padding:14px;margin-bottom:16px;">
+    <textarea id="dad-note" placeholder="今天做得很好的地方、明天加油的地方、或任何想說的話…" oninput="saveDadNote()"></textarea>
+    <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="btn btn-gold btn-sm" onclick="saveDadNote()">送出留言</button>
+    </div>
+    <div id="note-saved" style="font-size:10px;color:var(--gold);margin-top:5px;opacity:0;transition:opacity .3s;">已儲存 ✓</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── Vars ────────────────────────────────
+var MEM = {};
+var DAYS_ZH = ['週日','週一','週二','週三','週四','週五','週六'];
+var currentDay = new Date().getDay();
+currentDay = currentDay === 0 ? 6 : currentDay - 1;
+
+// ── Storage ─────────────────────────────
+async function sg(k){ try{ if(window.storage){ var r=await window.storage.get(k); if(r){MEM[k]=r.value;return r.value;} } }catch(e){} return MEM[k]||null; }
+async function ss(k,v){ MEM[k]=v; try{if(window.storage)await window.storage.set(k,v);}catch(e){} }
+function tkey(){ var d=new Date(); return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
+
+// ── Nav ──────────────────────────────────
+function sw(id, btn){
+  document.querySelectorAll('.sec').forEach(function(s){s.classList.remove('active');});
+  document.querySelectorAll('#main-nav button').forEach(function(b){b.classList.remove('active');});
+  document.getElementById(id).classList.add('active');
+  if(btn) btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(id==='tracker') renderTracker();
+}
+function sd(id, btn){
+  document.querySelectorAll('.day-detail').forEach(function(d){d.classList.remove('active');});
+  document.querySelectorAll('.day-tab').forEach(function(b){b.classList.remove('active');});
+  document.getElementById(id).classList.add('active');
+  if(btn) btn.classList.add('active');
+}
+function toggleCL(el){ el.classList.toggle('done'); }
+
+// ── Tracker Data ─────────────────────────
+var TASK_DATA = {
+  0:[['🔄 放學當日回想20分鐘','核心','#0f0c07',true],['🔬 自然章節題目 10–15題','自然','#831843',true],['📝 英文補習前：把問題寫便條紙','補習','#374151',true],['🔄 英文補習後消化20分鐘','補習','#374151',true],['📖 國文朗讀 + 好句抄寫','國文','#78350f',true],['📝 英文考卷（帶回家作答）','考卷','#1e3a8a',true],['💤 22:30前就寢','生活','#6b6258',true]],
+  1:[['🔄 放學當日回想20分鐘','核心','#0f0c07',true],['🔬 自然深耕：弱點章節心智圖','自然','#831843',true],['🌏 社會深耕：故事記憶法','社會','#4c1d95',true],['📖 國文課外散文一篇+三句話摘要','國文','#78350f',true],['✍️ 仿寫10分鐘','國文','#78350f',false],['📝 補習考卷（數學或英文）','考卷','#1e3a8a',false],['💤 22:00前就寢','生活','#6b6258',true]],
+  2:[['🔄 放學當日回想20分鐘','核心','#0f0c07',true],['📝 數學補習前：把問題寫便條紙','補習','#374151',true],['🔄 數學補習後消化20分鐘','補習','#374151',true],['英文複習：本週補習重點','英文','#14532d',false],['📖 國文朗讀 + 好句抄寫','國文','#78350f',true],['💤 22:30前就寢','生活','#6b6258',true]],
+  3:[['🔄 放學當日回想20分鐘','核心','#0f0c07',true],['🔬 自然章節錯題提取複習','自然','#831843',true],['📝 國文補習前：整理本週語感筆記','補習','#374151',true],['🔄 國文補習後消化20分鐘','補習','#374151',true],['🔤 英文單字 15新+10舊','英文','#14532d',true],['💤 22:30前就寢','生活','#6b6258',true]],
+  4:[['🔄 放學當日回想20分鐘','核心','#0f0c07',true],['🌏 社會章節題目 10–15題','社會','#4c1d95',true],['📝 英文補習前：把問題寫便條紙','補習','#374151',true],['🔄 英文補習後消化20分鐘','補習','#374151',true],['📖 國文朗讀 + 好句抄寫','國文','#78350f',true],['📝 英文考卷（帶回家作答）','考卷','#1e3a8a',true],['💤 22:30前就寢','生活','#6b6258',true]],
+  5:[['🔬 自然弱點章節攻堅','自然','#831843',true],['🌏 社會章節整理（故事線或地圖）','社會','#4c1d95',true],['📖 國文深度閱讀 + 仿寫','國文','#78350f',true],['📝 週六小測：各科章節各3–5題','小測','#7c3a1e',true],['📒 更新弱點地圖','錯題','#5b1e6b',true],['✏️ 睡前好句抄寫','國文','#78350f',false]],
+  6:[['🗣 父子復盤30分鐘','核心','#0f0c07',true],['🗺️ 更新弱點地圖，確認下週攻哪章','核心','#0f0c07',true],['📅 規劃下週計畫','核心','#0f0c07',true],['✍️ 寫下這週三件做到的事','核心','#0f0c07',true],['📖 國文朗讀10分鐘','國文','#78350f',false]]
+};
+
+var STORE = {};
+
+function loadChecked(d){ return STORE[d]||{}; }
+function saveChecked(d,s){ STORE[d]=s; ss('trk_'+tkey()+'_d'+d, JSON.stringify(s)); }
+
+function toggleTask(d,i){
+  var s=loadChecked(d);
+  s[i]=!s[i];
+  saveChecked(d,s);
+  renderTracker();
+}
+
+function renderTracker(){
+  var d=currentDay;
+  var tasks=TASK_DATA[d];
+  var s=loadChecked(d);
+  var color=['#1e4d8c','#2e6b3e','#7c3a1e','#5b1e6b','#1e5c5c','#8c1e1e','#4a4038'][d];
+  var dn=['週一','週二','週三','週四','週五','週六','週日'];
+
+  var done=0;
+  for(var k in s){ if(s[k]) done++; }
+  var total=tasks.length;
+  var pct=total?Math.round(done/total*100):0;
+  document.getElementById('trk-bar').style.width=pct+'%';
+  document.getElementById('trk-label').textContent='今天完成 '+done+' / '+total+' 項（'+pct+'%）'+(done===total&&total>0?' 🎉 全部完成！':'');
+
+  var html='<div style="background:'+color+';color:white;padding:11px 14px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;">';
+  html+='<span style="font-family:Noto Serif TC,serif;font-size:15px;font-weight:900;">'+dn[d]+'　今日任務</span>';
+  html+='<div style="display:flex;gap:5px;flex-wrap:wrap;">';
+  dn.forEach(function(name,i){
+    html+='<button onclick="currentDay='+i+';renderTracker();" style="border:none;padding:4px 9px;font-size:10px;font-weight:700;cursor:pointer;background:'+(i===d?'rgba(255,255,255,0.25)':'rgba(255,255,255,0.1)')+';color:white;font-family:Noto Sans TC,sans-serif;">'+name+'</button>';
+  });
+  html+='</div></div>';
+
+  html+='<table class="trk-tbl"><thead><tr><th style="width:48px;">完成</th><th>任務</th><th style="width:60px;">類別</th><th style="width:48px;">必做</th></tr></thead><tbody>';
+  tasks.forEach(function(t,i){
+    var done2=!!s[i];
+    var bg=i%2===0?'var(--white)':'rgba(236,230,216,0.25)';
+    html+='<tr onclick="toggleTask('+d+','+i+')" style="cursor:pointer;background:'+bg+';">';
+    html+='<td style="text-align:center;"><div class="trk-chk" style="background:'+(done2?color:'transparent')+';border-color:'+(done2?color:'var(--gold)')+';color:'+(done2?'white':'var(--gold)')+';">✓</div></td>';
+    html+='<td class="'+(done2?'trk-done':'')+'">'+t[0]+'</td>';
+    html+='<td style="text-align:center;"><span class="cat-tag" style="background:'+t[2]+';">'+t[1]+'</span></td>';
+    html+='<td style="text-align:center;color:'+(t[3]?'var(--gold)':'var(--light)')+';font-size:15px;">'+(t[3]?'★':'☆')+'</td>';
+    html+='</tr>';
+  });
+  html+='</tbody></table>';
+
+  var reqT=tasks.filter(function(t){return t[3];}).length;
+  var reqD=tasks.filter(function(t,i){return t[3]&&s[i];}).length;
+  var msg=done===total?'🎉 今天全部完成！':(reqD===reqT?'✅ 必做全部完成！':'⏳ 還有 '+(reqT-reqD)+' 項必做未完成');
+  html+='<div style="background:var(--light);padding:11px 14px;display:flex;gap:16px;flex-wrap:wrap;font-size:11.5px;color:var(--gray);margin-top:2px;">';
+  html+='<span>總任務 <strong style="color:var(--ink);">'+total+'</strong></span>';
+  html+='<span>★必做 <strong style="color:var(--ink);">'+reqD+'/'+reqT+'</strong></span>';
+  html+='<span style="margin-left:auto;font-weight:700;color:'+(done===total?'var(--green)':'var(--gray)')+';">'+msg+'</span></div>';
+
+  document.getElementById('trk-content').innerHTML=html;
+
+  // week grid
+  var wg=document.getElementById('week-grid');
+  var whtml='';
+  dn.forEach(function(name,i){
+    var ts=TASK_DATA[i];
+    var cs=loadChecked(i);
+    var cnt=0; for(var k in cs){if(cs[k])cnt++;}
+    var p=ts.length?Math.round(cnt/ts.length*100):0;
+    var isT=i===currentDay;
+    var cls=p>=100?'g':p>0?'m':'';
+    whtml+='<div class="wday'+(isT?' today':'')+'" onclick="currentDay='+i+';renderTracker();" style="cursor:pointer;">';
+    whtml+='<div class="wd-name">'+name+'</div>';
+    whtml+='<div class="wd-pct '+cls+'">'+p+'%</div></div>';
+  });
+  wg.innerHTML=whtml;
+}
+
+// dad note
+var dadNoteTimer;
+function saveDadNote(){
+  var txt=document.getElementById('dad-note').value;
+  clearTimeout(dadNoteTimer);
+  dadNoteTimer=setTimeout(async function(){
+    await ss('dad_note_today',txt);
+    var ns=document.getElementById('note-saved');
+    if(ns){ns.style.opacity='1';setTimeout(function(){ns.style.opacity='0';},1500);}
+  },600);
+}
+
+// toast
+function showToast(msg){ var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2000); }
+
+// init
+async function init(){
+  var raw=await sg('trk_'+tkey()+'_all');
+  if(raw) STORE=JSON.parse(raw);
+  for(var i=0;i<7;i++){
+    var dr=await sg('trk_'+tkey()+'_d'+i);
+    if(dr) STORE[i]=JSON.parse(dr);
+  }
+  var dn2=await sg('dad_note_today');
+  if(dn2){
+    document.getElementById('dad-note').value=dn2;
+    var b=document.getElementById('dad-banner');
+    var bt=document.getElementById('dad-banner-txt');
+    if(b&&bt&&dn2.trim()){b.style.display='block';bt.textContent=dn2;}
+  }
+  // set today's day tab active
+  var dow=new Date().getDay();
+  var todayIdx=dow===0?6:dow-1;
+  currentDay=todayIdx;
+}
+init();
+</script>
+</body>
+</html>
